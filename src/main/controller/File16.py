@@ -6,8 +6,8 @@ def get_notifications_for_user(conn, username):
     # Ensure the connection is using a secure method if available
     if hasattr(conn, 'isolation_level') and conn.isolation_level is None:
         raise ValueError("Insecure connection: Ensure the connection uses a secure method.")
-    # Check if the connection is using SSL
+    # Check if the connection is using TLS/SSL
     if not conn.execute("PRAGMA cipher_version;").fetchone():
-        raise ValueError("Insecure connection: Ensure the connection uses SSL.")
+        raise ValueError("Insecure connection: Ensure the database connection uses TLS/SSL.")
     query = "SELECT * FROM notifications WHERE username = ?"
     return conn.execute(query, (username,)).fetchall()
